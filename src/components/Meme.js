@@ -1,23 +1,31 @@
-import React, { useState } from "react";
-import Trollface from '../images/troll-face.png'
-import memesData from "../memesData.js"
+import React, { useState } from "react"
 
 const Meme = () => {
 
+    React.useEffect(() => {
+        fetch('https://api.imgflip.com/get_memes')
+            .then(res => res.json())
+            .then(data => setAllMemes(data.data.memes))
+    }, [])
+    
+    
+    
+    
+    
+    
     const [meme, setMeme] = React.useState({
         topText: '',
         bottomText: '',
         randomImage: 'http://i.imgflip.com/1bij.jpg'
     })
 
-    const [allMemeImages, setAllMemeImages] = React.useState(memesData)
+    const [allMemes, setAllMemes] = React.useState([])
 
     //const [memeImage, setMemeImage] = React.useState('http://i.imgflip.com/1bij.jpg')
 
     const getMemeImage = () => {
-        const memesArray = allMemeImages.data.memes
-        const randomNumber = Math.floor(Math.random() * memesArray.length)
-        const url = memesArray[randomNumber].url
+        const randomNumber = Math.floor(Math.random() * allMemes.length)
+        const url = allMemes[randomNumber].url
         setMeme(prevMeme => ({
             ...prevMeme,
             randomImage: url
